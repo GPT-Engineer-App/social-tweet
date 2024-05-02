@@ -1,8 +1,10 @@
+import { useState } from "react";
 import { Box, Flex, IconButton, Input, Stack, Text, VStack, Image, Button } from "@chakra-ui/react";
 import { FaHeart, FaRetweet, FaTwitter } from "react-icons/fa";
 
 const Index = () => {
-  const tweets = [
+  const [tweetInput, setTweetInput] = useState("");
+  const [tweets, setTweets] = useState([
     {
       id: 1,
       user: "John Doe",
@@ -21,7 +23,7 @@ const Index = () => {
       likes: 20,
       retweets: 8,
     },
-  ];
+  ]);
 
   return (
     <VStack spacing={4} p={5}>
@@ -29,11 +31,27 @@ const Index = () => {
         <Text fontSize="2xl" fontWeight="bold">
           MiniTwitter <FaTwitter color="#1DA1F2" />
         </Text>
-        <Button colorScheme="twitter" leftIcon={<FaTwitter />}>
+        <Button
+          colorScheme="twitter"
+          leftIcon={<FaTwitter />}
+          onClick={() => {
+            const newTweet = {
+              id: tweets.length + 1,
+              user: "New User",
+              handle: "@newuser",
+              content: tweetInput,
+              avatar: "https://via.placeholder.com/50",
+              likes: 0,
+              retweets: 0,
+            };
+            setTweets([...tweets, newTweet]);
+            setTweetInput("");
+          }}
+        >
           Tweet
         </Button>
       </Flex>
-      <Input placeholder="What's happening?" size="lg" />
+      <Input placeholder="What's happening?" size="lg" value={tweetInput} onChange={(e) => setTweetInput(e.target.value)} />
       <Stack spacing={4} w="full">
         {tweets.map((tweet) => (
           <Box key={tweet.id} p={4} shadow="md" borderWidth="1px" borderRadius="lg">
